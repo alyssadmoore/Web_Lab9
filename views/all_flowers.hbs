@@ -21,6 +21,10 @@
 {{/each}}
 </ul>
 
-{{#if color_filter}}
-  <a href="/">Clear selection</a>
-{{/if}}
+<h2>Add New Flower</h2>
+<form action="/addFlower" method="POST">
+  Name <input type="text" name="name" placeholder="Name" required><br>
+  Color <input type="text" name="color" placeholder="Color" required><br>
+  Wikipedia page <input type="text" name="wiki" placeholder="Wikipedia page"><br>
+  <button type="submit">Save</button>
+</form>
