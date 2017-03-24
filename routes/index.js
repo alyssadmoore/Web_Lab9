@@ -40,12 +40,43 @@ router.get('/details/:flower', function(req, res){
 });
 
 router.post('/addFlower', function(req, res, next){
-  req.db.collection('flowers').insertOne(req.body, function(err){
+  if (!req.db.collection('flowers').find({'name': req.body.name})){
+    req.db.collection('flowers').insertOne(req.body, function(err){
+      if (err){
+        return next(err);
+      }
+      return res.redirect('/');
+    });
+  }
+  else {
+    return res.redirect('/');
+  };
+});
+
+router.post('/deleteflower', function(req, res, next){
+  var filter = {'name': req.body.name};
+  if (req.db.collection('flowers').find({'name': req.body.name})){
+    req.db.collection('flowers').remove(filter, function(err){
+      if (err){
+        return next(err);
+      }
+      return res.redirect('/');
+    });
+  } else {
+    return res.redirect('/');
+  }
+});
+
+router.put('/updateColor', function(req, res, next){
+  var filter = { 'name' : req.body.name };
+  var update = { $set : { 'color' : req.body.color }};
+
+  req.db.collection('flowers').findOneAndUpdate(filter, update, function(err){
     if (err){
       return next(err);
     }
-    return res.redirect('/');
-  });
+    return res.send({'color' : req.body.color})
+  })
 });
 
 module.exports = router;

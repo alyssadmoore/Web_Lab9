@@ -15,7 +15,7 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.engine('.hbs', hbs({extname : '.hbs'}));
+app.engine('.hbs', hbs({extname : '.hbs', defaultLayout:'layout'}));
 app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
@@ -26,7 +26,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var url='mongodb://localhost:27017/garden';
+var mongo_pw = process.env.MONGO_PW;
+var url = 'mongodb://gardener:flower@localhost:27017/garden';
 MongoClient.connect(url, function(err, db){
   assert.equal(null, err);
   console.log('Connected to MongoDB');
